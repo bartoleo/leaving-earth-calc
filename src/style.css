@@ -1,0 +1,213 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  position: fixed;
+  font-size: 40px;
+  line-height: 1.1;
+  top: 0px;
+  background-color: white;
+  border-bottom: 1px solid #333;
+}
+
+.new-game-buttons button{
+  margin: 5px;
+}
+
+#app {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.page-fade-out {
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.page-fade-in {
+  transition: opacity 0.3s;
+  opacity: 1;
+} 
+
+.clickable{
+  cursor: pointer;
+}
+
+
+.navbar{
+  border-bottom: 1px solid black;
+}
+
+.game-button {
+  margin: 10px;
+}
+
+.game-button:disabled {
+  opacity: 30% !important;
+}
+
+.new-game-info{
+  margin: 10px;
+  font-weight: bold;
+}
+
+.header-small{
+  font-size: 80%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.game-button-bar button{
+  margin-left: 2px;
+}
+
+.game-button-bar button.btn-primary-outline{
+  color: white;
+}
+
+
+.icon-crossed {
+  position: relative;
+}
+.icon-crossed:after {
+  position: absolute;
+  content: "/";
+  color: white;
+  font-weight: 700;
+  font-size: 1.7em;
+  left: 5px;
+  top: -7px;
+}
+
+.audioVolume-slider{
+  width: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+  .navbar{
+    zoom: 50%;
+  }
+
+  .game-button{
+    zoom: 110%;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .navbar{
+    zoom: 75%;
+  }
+
+  .game-button{
+    zoom: 110%;
+  }
+
+}
+
+.debug{
+  display: none;
+  visibility: hidden;
+}
+.debugEnabled .debug{
+  display: revert;
+  visibility: visible;
+}
+
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.rocket-checkbox{
+  margin: 5px;
+}
+.div-mission{
+  margin: 5px;
+}
+.mass-input, .difficulty-input {
+  width: 3em
+}
+.table-results, 
+.table-history{
+  margin: 5px auto;
+  width: 90%;
+  max-width: 800px;
+  border-collapse: collapse;
+}
+.table-results th, .table-results td, 
+.table-history th, .table-history td {
+  padding: 3px;
+  border: 1px solid #dddddd;
+  text-align: center;
+}
+.table-results tr.odd-row, .table-results th, 
+.table-history tr.odd-row, .table-history th {
+  background-color: #f0f0f0;
+}
+.table-results .best-cost-rockets, .table-results .best-mass-rockets, 
+.table-history .best-cost-rockets, .table-history .best-mass-rockets{
+  font-weight: bold;
+}
+.table-results .value-0, 
+.table-history .value-0{
+  color: #bbbbbb;
+}
+.button-change{
+  margin: 0 2px 0 2px;
+}
+.div-mass, .div-difficulty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+}
