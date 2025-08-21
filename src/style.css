@@ -168,12 +168,12 @@ input[type=number] {
   }
 }
 
-.rocket-checkbox{
+/*.rocket-checkbox{
   margin: 5px;
-}
-.div-mission{
+}*/
+/*.div-mission{
   margin: 5px;
-}
+}*/
 .mass-input, .difficulty-input {
   width: 3em
 }

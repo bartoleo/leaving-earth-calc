@@ -85,11 +85,12 @@ const recalculateValues = () => {
               thrust += rockets.juno.s[difficulty-1] * junos;
             }
 
-            // round thrust
-            thrust = Math.round(thrust, 2);
-            
             //console.log(`Thrust: ${thrust}, Total Mass: ${totalMass}, Cost: ${cost}, Saturns: ${saturns}, Soyuzs: ${soyuzs}, Atlases: ${atlases}, Junos: ${junos}`);  
             if (thrust >= thrustCheck) {
+
+              // round thrust
+              thrust = Math.round(thrust, 2);
+            
               var addToResult = true;
 
               massRockets += rockets.saturn.mass * saturns;
@@ -355,24 +356,29 @@ onMounted(() => {
     </div>
   </nav>
 
-  <div class="div-mission">
-    Mission: <input v-model="store.mission" placeholder="Mission" class="mission-input" />
-    Step: <input v-model="store.step" placeholder="Step" class="step-input" />
+  <div class="input-group mb-3">
+    <span class="input-group-text">Mission and step:</span>
+    <input v-model="store.mission" placeholder="Mission" class="form-control mission-input" />
+    <input v-model="store.step" placeholder="Step" class="form-control step-input" />
   </div>
 
-  <input id="chkSaturn" type="checkbox" v-model="store.saturn" class="btn-check" @change="toggleSaturn()" />
-  <label for="chkSaturn" class="btn btn-outline-primary rocket-checkbox">Saturn</label>
-  <input id="chkSoyuz" type="checkbox" v-model="store.soyuz" class="btn-check" @change="toggleSoyuz()" />
-  <label for="chkSoyuz" class="btn btn-outline-primary rocket-checkbox">Soyuz</label>
-  <input id="chkAtlas" type="checkbox" v-model="store.atlas" class="btn-check" @change="toggleAtlas()" />
-  <label for="chkAtlas" class="btn btn-outline-primary rocket-checkbox">Atlas</label>
-  <input id="chkJuno" type="checkbox" v-model="store.juno" class="btn-check" @change="toggleJuno()" />
-  <label for="chkJuno" class="btn btn-outline-primary rocket-checkbox">Juno</label>
+  <div class="input-group mb-3">
+    <span class="input-group-text">Rockets:</span>
+    <input id="chkJuno" type="checkbox" v-model="store.juno" class="btn-check" @change="toggleJuno()" />
+    <label for="chkJuno" class="btn btn-outline-primary rocket-checkbox">Juno</label>
+    <input id="chkAtlas" type="checkbox" v-model="store.atlas" class="btn-check" @change="toggleAtlas()" />
+    <label for="chkAtlas" class="btn btn-outline-primary rocket-checkbox">Atlas</label>
+    <input id="chkSoyuz" type="checkbox" v-model="store.soyuz" class="btn-check" @change="toggleSoyuz()" />
+    <label for="chkSoyuz" class="btn btn-outline-primary rocket-checkbox">Soyuz</label>
+    <input id="chkSaturn" type="checkbox" v-model="store.saturn" class="btn-check" @change="toggleSaturn()" />
+    <label for="chkSaturn" class="btn btn-outline-primary rocket-checkbox">Saturn</label>
+   </div>
 
-  <div class="div-mass">
+  <div class="input-group mb-3">
     <button class="btn btn-secondary button-change" @click="incrementMass(-5)">-5</button>
     <button class="btn btn-secondary button-change" @click="incrementMass(-1)">-1</button>
-    Mass: <input type="number" v-model="store.mass" placeholder="Mass" class="mass-input" @change="recalculateValues()" />
+    <span class="input-group-text">Payload Mass:</span>
+    <input type="number" v-model="store.mass" placeholder="Mass" class="form-control mass-input" @change="recalculateValues()" />
     <button class="btn btn-secondary button-change" @click="incrementMass(1)">+1</button>
     <button class="btn btn-secondary button-change" @click="incrementMass(5)">+5</button>
     <button  v-if="history.length > 0" class="btn btn-secondary button-change" @click="changeMassFromLastHistory(5)">From last step: {{ historyTotals.totalMass }}</button>
@@ -421,23 +427,23 @@ onMounted(() => {
     <table class="table-results">
       <thead>
         <tr>
-          <th>Saturn</th>
-          <th>Soyuz</th>
-          <th>Atlas</th>
           <th>Juno</th>
+          <th>Atlas</th>
+          <th>Soyuz</th>
+          <th>Saturn</th>
           <th>Thrust</th>
           <th>Cost</th>
-          <th>Mass</th>
+          <th>Rockets Mass</th>
           <th>Total Mass</th>
-          <th>Add</th>
+          <th>History</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in result" :key="index" :class="index % 2 === 0 ? 'even-row' : 'odd-row'">
-          <td :class="item.saturns==0?'value-0':'value'">{{ item.saturns }}</td>
-          <td :class="item.soyuzs==0?'value-0':'value'">{{ item.soyuzs }}</td>
-          <td :class="item.atlases==0?'value-0':'value'">{{ item.atlases }}</td>
           <td :class="item.junos==0?'value-0':'value'">{{ item.junos }}</td>
+          <td :class="item.atlases==0?'value-0':'value'">{{ item.atlases }}</td>
+          <td :class="item.soyuzs==0?'value-0':'value'">{{ item.soyuzs }}</td>
+          <td :class="item.saturns==0?'value-0':'value'">{{ item.saturns }}</td>
           <td :class="item.thrust==0?'value-0':'value'">{{ item.thrust }}</td>
           <td :class="item.bestCostRockets ? 'best-cost-rockets' : ''">{{ item.costRockets }}</td>
           <td :class="item.bestMassRockets ? 'best-mass-rockets' : ''">{{ item.massRockets }}</td>
@@ -458,17 +464,17 @@ onMounted(() => {
           <tr>
             <th>Mission</th>
             <th>Step</th>
-            <th>Mass</th>
+            <th>Payload Mass</th>
             <th>Difficulty</th>
-            <th>Saturn</th>
-            <th>Soyuz</th>
-            <th>Atlas</th>
             <th>Juno</th>
+            <th>Atlas</th>
+            <th>Soyuz</th>
+            <th>Saturn</th>
             <th>Thrust</th>
             <th>Cost</th>
-            <th>Mass</th>
+            <th>Rockets Mass</th>
             <th>Total Mass</th>
-            <th>Remove</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
