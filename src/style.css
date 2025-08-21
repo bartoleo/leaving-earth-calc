@@ -168,31 +168,24 @@ input[type=number] {
   }
 }
 
-/*.rocket-checkbox{
-  margin: 5px;
-}*/
-/*.div-mission{
-  margin: 5px;
-}*/
+.calc-form-label{
+  width:8em;
+}
+.rocket-checkbox{
+  margin-right: 2px;
+}
 .mass-input, .difficulty-input {
-  width: 3em
+  /*width: 3em;*/
+  text-align: center;
 }
 .table-results, 
 .table-history{
-  margin: 5px auto;
-  width: 90%;
-  max-width: 800px;
-  border-collapse: collapse;
+  /*width: 90%;
+  max-width: 800px;*/
 }
 .table-results th, .table-results td, 
 .table-history th, .table-history td {
-  padding: 3px;
-  border: 1px solid #dddddd;
   text-align: center;
-}
-.table-results tr.odd-row, .table-results th, 
-.table-history tr.odd-row, .table-history th {
-  background-color: #f0f0f0;
 }
 .table-results .best-cost-rockets, .table-results .best-mass-rockets, 
 .table-history .best-cost-rockets, .table-history .best-mass-rockets{
@@ -210,4 +203,10 @@ input[type=number] {
   align-items: center;
   justify-content: center;
   margin: 10px auto;
+}
+.history-title{
+  color: white;
+  padding: 5px;
+  font-weight: bold;
+  text-align: center;
 }

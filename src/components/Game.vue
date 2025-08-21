@@ -319,10 +319,10 @@ const calculateHistoryTotals = () => {
     totals.junos += item.junos;
     totals.thrust += item.thrust;
     totals.costRockets += item.costRockets;
+    totals.massRockets += item.massRockets;
   });
 
-  //massrockets and totalmass is the max value
-  totals.massRockets = Math.max(...store.history.map(i => i.massRockets));
+  //totalmass is the max value
   totals.totalMass = Math.max(...store.history.map(i => i.totalMass));  
 
   store.setValues({
@@ -357,28 +357,29 @@ onMounted(() => {
   </nav>
 
   <div class="input-group mb-3">
-    <span class="input-group-text">Mission and step:</span>
-    <input v-model="store.mission" placeholder="Mission" class="form-control mission-input" />
-    <input v-model="store.step" placeholder="Step" class="form-control step-input" />
+    <label class="input-group-text calc-form-label" for="txtMission">Mission:</label>
+    <input id="txtMission" v-model="store.mission" placeholder="Mission" class="form-control mission-input" />
+    <label class="input-group-text" for="txtStep">Step:</label>
+    <input id="txtStep" v-model="store.step" placeholder="Step" class="form-control step-input" />
   </div>
 
   <div class="input-group mb-3">
-    <span class="input-group-text">Rockets:</span>
+    <span class="input-group-text calc-form-label">Rockets:</span>
     <input id="chkJuno" type="checkbox" v-model="store.juno" class="btn-check" @change="toggleJuno()" />
-    <label for="chkJuno" class="btn btn-outline-primary rocket-checkbox">Juno</label>
+    <label for="chkJuno" class="btn btn-outline-primary form-control rocket-checkbox">Juno</label>
     <input id="chkAtlas" type="checkbox" v-model="store.atlas" class="btn-check" @change="toggleAtlas()" />
-    <label for="chkAtlas" class="btn btn-outline-primary rocket-checkbox">Atlas</label>
+    <label for="chkAtlas" class="btn btn-outline-primary form-control rocket-checkbox">Atlas</label>
     <input id="chkSoyuz" type="checkbox" v-model="store.soyuz" class="btn-check" @change="toggleSoyuz()" />
-    <label for="chkSoyuz" class="btn btn-outline-primary rocket-checkbox">Soyuz</label>
+    <label for="chkSoyuz" class="btn btn-outline-primary form-control rocket-checkbox">Soyuz</label>
     <input id="chkSaturn" type="checkbox" v-model="store.saturn" class="btn-check" @change="toggleSaturn()" />
-    <label for="chkSaturn" class="btn btn-outline-primary rocket-checkbox">Saturn</label>
+    <label for="chkSaturn" class="btn btn-outline-primary form-control rocket-checkbox">Saturn</label>
    </div>
 
   <div class="input-group mb-3">
+    <label class="input-group-text calc-form-label" for="txtMass">Payload Mass:</label>
     <button class="btn btn-secondary button-change" @click="incrementMass(-5)">-5</button>
     <button class="btn btn-secondary button-change" @click="incrementMass(-1)">-1</button>
-    <span class="input-group-text">Payload Mass:</span>
-    <input type="number" v-model="store.mass" placeholder="Mass" class="form-control mass-input" @change="recalculateValues()" />
+    <input type="number" id="txtMass" v-model="store.mass" placeholder="Mass" class="form-control mass-input" @change="recalculateValues()" />
     <button class="btn btn-secondary button-change" @click="incrementMass(1)">+1</button>
     <button class="btn btn-secondary button-change" @click="incrementMass(5)">+5</button>
     <button  v-if="history.length > 0" class="btn btn-secondary button-change" @click="changeMassFromLastHistory(5)">From last step: {{ historyTotals.totalMass }}</button>
@@ -392,39 +393,39 @@ onMounted(() => {
   </div>
   -->
 
-<div class="btn-group btn-group-difficulty" role="group" aria-label="Difficulty">
-  Difficulty
+<div class="input-group mb-3 btn-group btn-group-difficulty" role="group" aria-label="Difficulty">
+  <span class="input-group-text calc-form-label">Difficulty:</span>
+
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty1" autocomplete="off" v-model="store.difficulty" value="1" @change="toggleDifficulty(1)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty1">1</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty1">1</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty2" autocomplete="off" v-model="store.difficulty" value="2" @change="toggleDifficulty(2)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty2">2</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty2">2</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty3" autocomplete="off" v-model="store.difficulty" value="3" @change="toggleDifficulty(3)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty3">3</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty3">3</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty4" autocomplete="off" v-model="store.difficulty" value="4" @change="toggleDifficulty(4)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty4">4</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty4">4</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty5" autocomplete="off" v-model="store.difficulty" value="5" @change="toggleDifficulty(5)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty5">5</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty5">5</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty6" autocomplete="off" v-model="store.difficulty" value="6" @change="toggleDifficulty(6)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty6">6</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty6">6</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty7" autocomplete="off" v-model="store.difficulty" value="7" @change="toggleDifficulty(7)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty7">7</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty7">7</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty8" autocomplete="off" v-model="store.difficulty" value="8" @change="toggleDifficulty(8)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty8">8</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty8">8</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty9" autocomplete="off" v-model="store.difficulty" value="9" @change="toggleDifficulty(9)"/>
-  <label class="btn btn-outline-primary" for="btnDifficulty9">9</label>
+  <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty9">9</label>
 </div>
 
   <div>
-    Results:
-    <table class="table-results">
+    <table class="table table-sm table-striped table-results">
       <thead>
         <tr>
           <th>Juno</th>
@@ -439,7 +440,7 @@ onMounted(() => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in result" :key="index" :class="index % 2 === 0 ? 'even-row' : 'odd-row'">
+        <tr v-for="(item, index) in result" :key="index">
           <td :class="item.junos==0?'value-0':'value'">{{ item.junos }}</td>
           <td :class="item.atlases==0?'value-0':'value'">{{ item.atlases }}</td>
           <td :class="item.soyuzs==0?'value-0':'value'">{{ item.soyuzs }}</td>
@@ -449,17 +450,17 @@ onMounted(() => {
           <td :class="item.bestMassRockets ? 'best-mass-rockets' : ''">{{ item.massRockets }}</td>
           <td :class="item.bestMassRockets ? 'best-mass-rockets' : ''">{{ item.totalMass }}</td>
           <td class="add-button">
-            <button class="btn btn-primary" @click="addToHistory(item)">Add</button>
+            <button class="btn btn-primary btn-sm" @click="addToHistory(item)">Add</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="card m-1 history-container" v-if="viewHistory">
-    History
+  <div class="card m-1 bg-dark history-container" v-if="viewHistory">
+    <div class="history-title">History</div>
     <div class="history">
-      <table class="table-history">
+      <table class="table table-sm table-striped table-history">
         <thead>
           <tr>
             <th>Mission</th>
@@ -478,7 +479,7 @@ onMounted(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in history" :key="index" :class="index % 2 === 0 ? 'even-row' : 'odd-row'">
+          <tr v-for="(item, index) in history" :key="index">
             <td>{{ item.mission }}</td>
             <td>{{ item.step }}</td>
             <td>{{ item.mass }}</td>
@@ -492,7 +493,7 @@ onMounted(() => {
             <td :class="item.bestMassRockets ? 'best-mass-rockets' : ''">{{ item.massRockets }}</td>
             <td :class="item.bestMassRockets ? 'best-mass-rockets' : ''">{{ item.totalMass }}</td>
             <td class="remove-button">
-              <button class="btn btn-danger" @click="removeHistory(index)">Remove</button>
+              <button class="btn btn-danger btn-sm" @click="removeHistory(index)">Remove</button>
             </td>
           </tr>
         </tbody>
@@ -507,6 +508,7 @@ onMounted(() => {
             <td>{{ historyTotals.costRockets }}</td>
             <td>{{ historyTotals.massRockets }}</td>
             <td>{{ historyTotals.totalMass }}</td>
+            <td> </td>
           </tr>
         </tfoot>
       </table>
