@@ -26,7 +26,7 @@ const recalculateValues = () => {
   const maxMass = 150;
   const maxCost = 250;
   
-  if (mass <= 0 || difficulty <= 0 || difficulty >= 10 ||
+  if (mass < 0 || difficulty <= 0 || difficulty >= 10 ||
     (!store.saturn &&
      !store.soyuz &&
      !store.atlas &&
@@ -36,7 +36,7 @@ const recalculateValues = () => {
      console.log('No solution: mass or difficulty is zero or no rockets selected');
   } else {
 
-    console.log(`Calculating for mass: ${mass}, difficulty: ${difficulty}, rockets: ${store.saturn ? 'Saturn' : ''}${store.soyuz ? 'Soyuz ' : ''}${store.atlas ? 'Atlas' : ''}${store.juno ? 'Juno' : ''}`);
+    console.log(`Calculating for mass: ${mass}, difficulty: ${difficulty}, rockets: ${store.saturn ? 'Saturn ' : ''}${store.soyuz ? 'Soyuz ' : ''}${store.atlas ? 'Atlas ' : ''}${store.juno ? 'Juno' : ''}`);
 
     const thrustCheck = mass;
 
@@ -66,42 +66,48 @@ const recalculateValues = () => {
       for (var soyuzs=0;soyuzs<=maxSoyuzs;soyuzs++){
         for (var atlases=0;atlases<=maxAtlases;atlases++){
           for (var junos=0;junos<=maxJunos;junos++){
+            if (junos==0&&atlases==0&&soyuzs==0&&saturns==0){
+              continue; // skip if no rockets selected
+            }
             var thrust = 0;
             var massRockets = 0;
             var costRockets = 0;
             if (store.saturn){
               thrust += rockets.saturn.s[difficulty-1] * saturns;
-              massRockets += rockets.saturn.mass * saturns;
-              costRockets += rockets.saturn.cost * saturns;
             }
             if (store.soyuz){
               thrust += rockets.soyuz.s[difficulty-1] * soyuzs;
-              massRockets += rockets.soyuz.mass * soyuzs;
-              costRockets += rockets.soyuz.cost * soyuzs;
             } 
             if (store.atlas){
               thrust += rockets.atlas.s[difficulty-1] * atlases;
-              massRockets += rockets.atlas.mass * atlases;
-              costRockets += rockets.atlas.cost * atlases;
             }
             if (store.juno){
               thrust += rockets.juno.s[difficulty-1] * junos;
-              massRockets += rockets.juno.mass * junos;
-              costRockets += rockets.juno.cost * junos;
             }
 
-            thrust = Math.round(thrust * difficulty, 2);
+            // round thrust
+            thrust = Math.round(thrust, 2);
+            
             //console.log(`Thrust: ${thrust}, Total Mass: ${totalMass}, Cost: ${cost}, Saturns: ${saturns}, Soyuzs: ${soyuzs}, Atlases: ${atlases}, Junos: ${junos}`);  
             if (thrust >= thrustCheck) {
               var addToResult = true;
-              
+
+              massRockets += rockets.saturn.mass * saturns;
+              costRockets += rockets.saturn.cost * saturns;
+              massRockets += rockets.soyuz.mass * soyuzs;
+              costRockets += rockets.soyuz.cost * soyuzs;
+              massRockets += rockets.atlas.mass * atlases;
+              costRockets += rockets.atlas.cost * atlases;
+              massRockets += rockets.juno.mass * junos;
+              costRockets += rockets.juno.cost * junos;
+
               // add to results only if cost <= maxCost (500?)
               if (costRockets > maxCost){
-                addToResult=false;
+                addToResult = false;
               }
               // add to results only if mass <= maxMass (150?)
-              if (massRockets>maxMass){
-                addToResult=false;
+              if (massRockets > maxMass){
+                addToResult = false;
               }
               
               resultCalc.forEach((item) => {
@@ -112,6 +118,8 @@ const recalculateValues = () => {
                  ) {
                   //already exists in result
                   addToResult = false;
+                  // break junos loop
+                  junos = maxJunos+1;
                  }
               });
 
@@ -220,20 +228,40 @@ const toggleJuno =() => {
   recalculateValues();
 }
 
-const changeMass = (value) => {
+const incrementMass = (value) => {
   store.setValues({
     mass: Math.max(0, store.mass + value)
   });
   recalculateValues();
 }
 
-const changeDifficulty = (value) => {
+const changeMassFromLastHistory = () => {
+  if (store.history.length > 0) {
+    const lastItem = store.history[store.history.length - 1];
+    store.setValues({
+      mass: Math.max(0, lastItem.totalMass)
+    });
+    recalculateValues();
+  } else {
+    alert('No history available to change mass from.');
+  }
+}
+
+const incrementDifficulty = (value) => {
   store.setValues({
     difficulty: Math.max(1, Math.min(9, store.difficulty + value))
   });
   recalculateValues();
 }
 
+const toggleDifficulty = (value) => {
+  store.setValues({
+    difficulty: store.difficulty
+  });
+  recalculateValues();
+}
+
+changeMassFromLastHistory
 const addToHistory = (item) => {
   var newItem = {
     mission: store.mission,
@@ -342,19 +370,51 @@ onMounted(() => {
   <label for="chkJuno" class="btn btn-outline-primary rocket-checkbox">Juno</label>
 
   <div class="div-mass">
-    <button class="btn btn-secondary button-change" @click="changeMass(-5)">-5</button>
-    <button class="btn btn-secondary button-change" @click="changeMass(-1)">-1</button>
+    <button class="btn btn-secondary button-change" @click="incrementMass(-5)">-5</button>
+    <button class="btn btn-secondary button-change" @click="incrementMass(-1)">-1</button>
     Mass: <input type="number" v-model="store.mass" placeholder="Mass" class="mass-input" @change="recalculateValues()" />
-    <button class="btn btn-secondary button-change" @click="changeMass(1)">+1</button>
-    <button class="btn btn-secondary button-change" @click="changeMass(5)">+5</button>
+    <button class="btn btn-secondary button-change" @click="incrementMass(1)">+1</button>
+    <button class="btn btn-secondary button-change" @click="incrementMass(5)">+5</button>
+    <button  v-if="history.length > 0" class="btn btn-secondary button-change" @click="changeMassFromLastHistory(5)">From last step: {{ historyTotals.totalMass }}</button>
   </div>
-  <div class="div-difficulty">
-    <button class="btn btn-secondary button-change" @click="changeDifficulty(-5)">-5</button>
-    <button class="btn btn-secondary button-change" @click="changeDifficulty(-1)">-1</button>
+  <!--<div class="div-difficulty">
+    <button class="btn btn-secondary button-change" @click="incrementDifficulty(-5)">-5</button>
+    <button class="btn btn-secondary button-change" @click="incrementDifficulty(-1)">-1</button>
     Difficulty: <input type="number" v-model="store.difficulty" placeholder="Difficulty" class="difficulty-input" @change="recalculateValues()" />
-    <button class="btn btn-secondary button-change" @click="changeDifficulty(1)">+1</button>
-    <button class="btn btn-secondary button-change" @click="changeDifficulty(5)">+5</button>
+    <button class="btn btn-secondary button-change" @click="incrementDifficulty(1)">+1</button>
+    <button class="btn btn-secondary button-change" @click="incrementDifficulty(5)">+5</button>
   </div>
+  -->
+
+<div class="btn-group btn-group-difficulty" role="group" aria-label="Difficulty">
+  Difficulty
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty1" autocomplete="off" v-model="store.difficulty" value="1" @change="toggleDifficulty(1)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty1">1</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty2" autocomplete="off" v-model="store.difficulty" value="2" @change="toggleDifficulty(2)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty2">2</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty3" autocomplete="off" v-model="store.difficulty" value="3" @change="toggleDifficulty(3)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty3">3</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty4" autocomplete="off" v-model="store.difficulty" value="4" @change="toggleDifficulty(4)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty4">4</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty5" autocomplete="off" v-model="store.difficulty" value="5" @change="toggleDifficulty(5)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty5">5</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty6" autocomplete="off" v-model="store.difficulty" value="6" @change="toggleDifficulty(6)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty6">6</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty7" autocomplete="off" v-model="store.difficulty" value="7" @change="toggleDifficulty(7)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty7">7</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty8" autocomplete="off" v-model="store.difficulty" value="8" @change="toggleDifficulty(8)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty8">8</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnDifficulty9" autocomplete="off" v-model="store.difficulty" value="9" @change="toggleDifficulty(9)"/>
+  <label class="btn btn-outline-primary" for="btnDifficulty9">9</label>
+</div>
 
   <div>
     Results:
