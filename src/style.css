@@ -183,6 +183,14 @@ input[type=number] {
   /*width: 90%;
   max-width: 800px;*/
 }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+.div-results {
+    max-height: 12em;
+    overflow: auto;
+}
+.div-history {
+    overflow: auto;
+}
 .table-results th, .table-results td, 
 .table-history th, .table-history td {
   text-align: center;
@@ -193,7 +201,7 @@ input[type=number] {
 }
 .table-results .value-0, 
 .table-history .value-0{
-  color: #bbbbbb;
+  color: #c8c8c8;
 }
 .button-change{
   margin: 0 2px 0 2px;

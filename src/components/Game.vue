@@ -424,8 +424,8 @@ onMounted(() => {
   <label class="btn btn-outline-primary form-control difficulty-radio" for="btnDifficulty9">9</label>
 </div>
 
-  <div>
-    <table class="table table-sm table-striped table-results">
+ <div class="card m-1 div-results">
+    <table class="table table-sm table-striped table-results tableFixHead">
       <thead>
         <tr>
           <th>Juno</th>
@@ -457,10 +457,10 @@ onMounted(() => {
     </table>
   </div>
 
-  <div class="card m-1 bg-dark history-container" v-if="viewHistory">
-    <div class="history-title">History</div>
-    <div class="history">
-      <table class="table table-sm table-striped table-history">
+  <div class="card m-1" v-if="viewHistory">
+    <div class="history-title bg-dark history-container">History</div>
+    <div class="history div-history">
+      <table class="table table-sm table-striped table-history tableFixHead">
         <thead>
           <tr>
             <th>Mission</th>
